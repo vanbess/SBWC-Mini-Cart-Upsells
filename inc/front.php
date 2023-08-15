@@ -115,7 +115,7 @@ add_action('woocommerce_after_mini_cart', function () {
 
             // if pll_current_language exists, get corresponding product if for current language
             if (function_exists('pll_current_language')) {
-                $product_id = pll_get_post($product_id, $curr_lang);
+                $product_id = pll_get_post($product_id, $curr_lang) ? pll_get_post($product_id, $curr_lang) : $product_id;
             }
 
             // get product object
