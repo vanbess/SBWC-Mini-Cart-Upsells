@@ -110,6 +110,14 @@ add_action('woocommerce_after_mini_cart', function () {
         // loop to get product objects and display in mini cart as per columns per row
         foreach ($upsell_product_ids as $key => $product_id) {
 
+            // get current language
+            $curr_lang = function_exists('pll_current_language') ? pll_current_language() : 'en';
+
+            // if pll_current_language exists, get corresponding product if for current language
+            if (function_exists('pll_current_language')) {
+                $product_id = pll_get_post($product_id, $curr_lang);
+            }
+
             // get product object
             $product = wc_get_product($product_id);
 
