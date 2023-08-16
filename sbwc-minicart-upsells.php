@@ -19,6 +19,9 @@ if (!defined('ABSPATH')) {
 define('SBWC_MINI_CART_UPSELLS_PATH', plugin_dir_path(__FILE__));
 define('SBWC_MINI_CART_UPSELLS_URL', plugin_dir_url(__FILE__));
 
+// Define parent theme name
+define('SBWC_MINI_CART_UPSELLS_THEME_NAME', wp_get_theme(get_template())->get('Name'));
+
 // Admin
 require_once(SBWC_MINI_CART_UPSELLS_PATH . 'inc/admin.php');
 

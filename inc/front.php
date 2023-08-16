@@ -102,37 +102,34 @@ add_action('woocommerce_after_mini_cart', function () {
                     });
                 }
             </script>
-            <?php endif;
+        <?php endif;
 
         // counter
-        $counter = 0;
+        $counter = 0; ?>
 
-        // loop to get product objects and display in mini cart as per columns per row
-        foreach ($upsell_product_ids as $key => $product_id) {
+        <!-- row -->
+        <div class="sbwc-mc-upsells-row" style="display: inline-table;">
 
-            // get current language
-            $curr_lang = function_exists('pll_current_language') ? pll_current_language() : 'en';
+            <?php
+            // loop to get product objects and display in mini cart as per columns per row
+            foreach ($upsell_product_ids as $key => $product_id) {
 
-            // if pll_current_language exists, get corresponding product if for current language
-            if (function_exists('pll_current_language')) {
-                $product_id = pll_get_post($product_id, $curr_lang) ? pll_get_post($product_id, $curr_lang) : $product_id;
-            }
+                // get current language
+                $curr_lang = function_exists('pll_current_language') ? pll_current_language() : 'en';
 
-            // get product object
-            $product = wc_get_product($product_id);
+                // if pll_current_language exists, get corresponding product if for current language
+                if (function_exists('pll_current_language')) {
+                    $product_id = pll_get_post($product_id, $curr_lang) ? pll_get_post($product_id, $curr_lang) : $product_id;
+                }
 
-            // get product name
-            $product_name = $product->get_name();
+                // get product object
+                $product = wc_get_product($product_id);
 
-            // get product image
-            $product_image = $product->get_image();
+                // get product name
+                $product_name = $product->get_name();
 
-            // if counter is equal to columns per row, reset counter and start new row
-            if ($counter % $columns_per_row == 0) { ?>
-
-                <!-- row -->
-                <div class="sbwc-mc-upsells-row">
-                <?php } ?>
+                // get product image
+                $product_image = $product->get_image(); ?>
 
                 <!-- product cont -->
                 <div class="sbwc-mc-upsells-product" style="width: calc(100% / <?php echo $columns_per_row; ?>);">
@@ -151,51 +148,106 @@ add_action('woocommerce_after_mini_cart', function () {
 
                 </div>
 
-                <?php
-                // if counter is equal to columns per row, reset counter and start new row
-                if ($counter % $columns_per_row == 0) { ?>
-                </div>
-        <?php }
 
+            <?php
                 // increment counter
                 $counter++;
             } ?>
 
+        </div>
     </div>
 
-    <style>
-        .sbwc-mc-upsells-product {
-            display: block;
-            float: left;
-            text-align: center;
-        }
+    <?php
+    // if theme name is Flatsome, add custom css
+    if (SBWC_MINI_CART_UPSELLS_THEME_NAME == 'Flatsome' || SBWC_MINI_CART_UPSELLS_THEME_NAME == 'Flatsome Child') : ?>
 
-        .sbwc-mc-upsells-product-image {
-            padding: 5px;
-            margin-bottom: 10px;
-        }
+        <style>
+            <?php if ($columns_per_row == 2) : ?>.off-canvas .off-canvas-cart {
+                width: 26vw;
+            }
 
-        .sbwc-mc-upsells-product-add-to-cart>p>a {
-            display: block;
-        }
+            <?php else : ?>.off-canvas .off-canvas-cart {
+                width: 36vw;
+            }
 
-        .sbwc-mc-upsells-product-add-to-cart>p {
-            border: none !important;
-        }
+            <?php endif; ?>.sbwc-mc-upsells-row {
+                overflow: auto;
+            }
 
-        .sbwc-mc-upsells-product-add-to-cart>p>span {
-            display: block;
-            margin-bottom: 15px;
-        }
+            .sbwc-mc-upsells-product {
+                display: inline-block;
+                width: 45%;
+            }
 
-        .sbwc-mc-upsells-product-add-to-cart>p>a {
-            text-align: center !important;
-        }
+            .sbwc-mc-upsells-product-rating.mt-3>div {
+                margin: 0 auto;
+            }
 
-        .mini-basket-dropdown.offcanvas-type .dropdown-box {
-            height: 100vh;
-            overflow-x: hidden;
-        }
-    </style>
+            .sbwc-mc-upsells-product {
+                padding: 0 10px;
+            }
 
-<?php });
+            .sbwc-mc-upsells-product-image>img {
+                align-self: top;
+            }
+
+            div.sbwc-mc-upsells-product-image {
+                display: table !important;
+            }
+
+            .sbwc-mc-upsells-product-name {
+                text-align: center;
+                min-height: 51px;
+                padding: 10px 0;
+                box-sizing: content-box;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p {
+                border: none !important;
+                text-align: center;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p>a {
+                margin-top: 15px !important;
+            }
+        </style>
+
+    <?php else : ?>
+
+        <style>
+            .sbwc-mc-upsells-product {
+                display: block;
+                float: left;
+                text-align: center;
+            }
+
+            .sbwc-mc-upsells-product-image {
+                padding: 5px;
+                margin-bottom: 10px;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p>a {
+                display: block;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p {
+                border: none !important;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p>span {
+                display: block;
+                margin-bottom: 15px;
+            }
+
+            .sbwc-mc-upsells-product-add-to-cart>p>a {
+                text-align: center !important;
+            }
+
+            .mini-basket-dropdown.offcanvas-type .dropdown-box {
+                height: 100vh;
+                overflow-x: hidden;
+            }
+        </style>
+
+<?php endif;
+});
